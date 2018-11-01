@@ -20,7 +20,7 @@ footer {
   background-color: dimgray;
   text-align: center;
   padding: 0.25rem;
-  margin-top: 1rem;
+  margin-top: auto;
 }
 
 footer p {
@@ -31,20 +31,20 @@ footer p {
 .navbar {
   background-color: lightgray;
   border-bottom: 2px solid gray;
-}
-.mode-selector {
-  margin: auto 0;
+  min-height: 60px;
+  padding: 0.5rem;
 }
 
 .welcome-header {
   text-align: center;
   color: dimgray;
-  margin: 0.5rem 0.25rem;
+  margin: 0.5rem;
 }
 
 .welcome-text {
   padding: 0.25rem 1rem;
   font-size: 1.2rem;
+  margin-bottom: auto;
 }
 
 .action-box {
@@ -55,13 +55,27 @@ footer p {
   border: 2px solid dimgray;
   border-radius: 0.25rem;
   padding: 1rem;
-  width: 50vmin;
-  height: 50vmin;
+  max-width: 50vmin;
+  max-height: 50vmin;
   text-transform: uppercase;
   font-size: 1.2rem;
+}
+
+.action-box img {
+  max-width: 75%;
+  max-height: 75%;
 }
 
 .action-box:any-link {
   color: dimgray;
   text-decoration: none;
+}
+
+/* Extrasmall screen */
+@media(max-width:575px) {
+  .action-box {
+    max-width: 75vmin;
+    max-height: 75vmin;
+    margin: 0.5rem auto;
+  }
 }
