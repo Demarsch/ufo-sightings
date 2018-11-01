@@ -1,0 +1,67 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Share Tech Mono', monospace;
+  color: dimgray;
+}
+
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  background-color: dimgray;
+  text-align: center;
+  padding: 0.25rem;
+  margin-top: 1rem;
+}
+
+footer p {
+  color: white;
+  margin: 0;
+}
+
+.navbar {
+  background-color: lightgray;
+  border-bottom: 2px solid gray;
+}
+.mode-selector {
+  margin: auto 0;
+}
+
+.welcome-header {
+  text-align: center;
+  color: dimgray;
+  margin: 0.5rem 0.25rem;
+}
+
+.welcome-text {
+  padding: 0.25rem 1rem;
+  font-size: 1.2rem;
+}
+
+.action-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  border: 2px solid dimgray;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  width: 50vmin;
+  height: 50vmin;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+.action-box:any-link {
+  color: dimgray;
+  text-decoration: none;
+}
