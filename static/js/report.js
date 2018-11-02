@@ -2,7 +2,11 @@ window.addEventListener('load', () => {
     let form = document.querySelector('form')
     form.addEventListener('submit', e => {           
         e.preventDefault();
-        e.stopPropagation();     
+        e.stopPropagation();   
+        let value = form[0].value;
+        if (value) {
+            form[0].value = value.slice(0, 16);
+        }
         if (form.checkValidity() === false) {
             form.classList.add('was-validated');  
         } else {
@@ -11,6 +15,7 @@ window.addEventListener('load', () => {
     });
     //Fix for iOS browsers - input with 'datetime-local' has to have a value
     //https://stackoverflow.com/questions/43747521/mobile-safari-10-3-1-datetime-local-enter-a-valid-value-error
+    //https://stackoverflow.com/questions/43596201/ios-datetime-inputs-always-considered-invalid
     // get the iso time string formatted for usage in an input['type="datetime-local"']
     var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
     var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
