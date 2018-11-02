@@ -15,8 +15,45 @@
       <span>USUS</span>
     </a>
   </nav>
+  <h1 class="page-header">Witness Report</h1>
+  <p class="page-text">OK, relax, take a deep breath and tell us everything. Try to remember as many details as you can. Where did you see? What did it look like? Are you sure it is not a joke of one of your neighbors? We guarantee the complete confidentiality. We will thouroughly investigate your report and let you know what we manage to find out</p>
+  <form class="mx-3 needs-validation" novalidate>
+    <div class="form-group when-group">
+      <label for="when">When did you see it?</label>
+      <input type="datetime-local" class="form-control" id="when" required>
+      <small id="whenHelp" class="accent">You don't have to be ultra precise</small>
+      <div class="invalid-feedback">
+        Please provide proper date and time
+      </div>
+    </div>    
+    <div class="form-group">
+      <label for="where">Where did you see it?</label>
+      <input type="text" class="form-control" id="where" maxlength="1000"  required>
+      <small id="whereHelp" class="accent">Any kind of address/location (max 1000 symbols)</small>
+      <div class="invalid-feedback">
+        Please provide any details on the location
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="what">What exactly did you see?</label>
+      <textarea class="form-control" id="what" rows="4" maxlength="5000" required></textarea>
+      <small id="whatHelp" class="accent">What did it look like? What shape did it have? What color was it? (max 5000 symbols)</small>
+      <div class="invalid-feedback">
+        Please provide any details on the UFO itself
+      </div>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="testimony"required>
+      <label class="form-check-label" for="testimony">By clicking 'Submit' I confirm that I saw it with my own eyes and this is not a joke</label>
+      <div class="invalid-feedback">
+        You must agree before submitting.
+      </div>
+    </div>
+    <button type="submit" class="btn my-3">Submit</button>
+  </form>
   <footer>
-    <p>Disclaimer: we are not responsible for any damage that any UFO can cause. Please contat MiB agency</p>
+      <p>Disclaimer: we are not responsible for any damage that any UFO can cause. Please contat MiB agency. Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
   </footer>
+  <script src="static/js/report.js"></script>
 </body>
 </html>

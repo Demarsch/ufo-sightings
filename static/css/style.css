@@ -26,6 +26,60 @@ footer {
 footer p {
   color: white;
   margin: 0;
+  font-size: 0.9rem;
+}
+
+footer p a {
+  color: white;
+}
+
+label {
+  font-weight: 600;
+}
+
+button[type='submit'] {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+input[type='datetime-local'] {
+  max-width: 240px;
+}
+
+#flash {
+  background-color: red;
+  opacity: 0;
+  position: fixed;
+  top: calc(50% - 5px);
+  right: calc(50% - 5px);
+  bottom: calc(50% - 5px);
+  left: calc(50% - 5px);
+  border-radius: 50%;
+  transition-duration: 0.5s;
+  transition-property: top, right, bottom, left, opacity, border-radius, background-color;
+}
+
+#flash.active {
+  opacity: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 0;
+  background-color: white;
+}
+
+.was-validated .form-control:valid {
+  border-color: #ced4da;
+}
+
+.was-validated .form-control:valid:focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}
+
+.was-validated .form-check-input:valid~.form-check-label {
+  color: inherit;
 }
 
 .navbar {
@@ -35,16 +89,22 @@ footer p {
   padding: 0.5rem;
 }
 
-.welcome-header {
+.accent {
+  color: cornflowerblue;
+  font-weight: 600;
+}
+
+.page-header {
   text-align: center;
   color: dimgray;
   margin: 0.5rem;
+  font-family: 'Share Tech Mono', monospace;
 }
 
-.welcome-text {
+.page-text {
   padding: 0.25rem 1rem;
   font-size: 1.2rem;
-  margin-bottom: auto;
+  margin-bottom: 0.25rem;
 }
 
 .action-box {
