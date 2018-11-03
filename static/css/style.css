@@ -69,6 +69,36 @@ input[type='datetime-local'] {
   background-color: white;
 }
 
+.suggestion-list {
+  min-height: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.suggestion {
+  background-color: cornflowerblue;
+  border-radius: 4px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+.suggestion-text {
+  color: white;
+  padding: 0.25rem;
+}
+
+.suggestion-action {
+  width: 30px;
+  padding: 0.25rem;
+}
+
+.active-filters {
+  min-height: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .was-validated .form-control:valid {
   border-color: #ced4da;
 }

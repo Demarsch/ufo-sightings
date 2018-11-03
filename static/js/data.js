@@ -1,4 +1,4 @@
-var data = [{
+const data = [{
     datetime: "1/1/2010",
     city: "benton",
     state: "ar",
@@ -998,3 +998,8 @@ var data = [{
     comments: "Bright orange object&#44 rapid speed and direction changes .."
   }
 ];
+
+for (const item of data) {
+  let date = Date.parse(item.datetime);
+  item.raw_datetime = date;
+}

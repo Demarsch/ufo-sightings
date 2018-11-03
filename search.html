@@ -18,7 +18,7 @@
   <h1 class="page-header">Welcome, Agent!</h1>
   <p class="page-text">Here you can find the info on all known UFO sightings. Use the search bar below to search for the specific cases. It is backed by our old AI USUSbot, he understands dates, countries, states and many other things.
   </p>
-  <input type="text" class="form-control my-2 mx-2" placeholder="Type anything. Try 'form', 'date' or 'state' for example">
+  <input id="search-bar" type="text" class="form-control mt-2 mb-3 mx-2" placeholder="Type anything. Try 'form', 'date' or 'state' for example">
   <div class="suggestion-list"></div>
   <div class="active-filters"></div>
   <div class="table-area">
@@ -38,7 +38,9 @@
   <footer>
     <p>Disclaimer: we are not responsible for any damage that any UFO can cause. Please contat MiB agency. Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
   </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script scr="static/js/dateformat.js"></script>
+  <script src="static/js/data.js"></script>
   <script src="static/js/search.js"></script>
 </body>
 </html>
