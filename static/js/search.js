@@ -74,7 +74,7 @@ function getDateSuggestions(text) {
     let date = Date.parse(text);
     if (date) {
         date += new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-        let dateStr = window.dateFormat(date, 'mmm d,yyyy')
+        let dateStr = dateFormat(date, 'mmm d,yyyy')
         return [
             {
                 display: `Before ${dateStr}`,
@@ -149,6 +149,35 @@ function updateSuggestions(suggestions) {
         .on('click', onAddFilter);
 }
 
+function getData() {
+    if (!activeFilters.length) {
+        return data;
+    }
+}
+
+function title(str) {
+    let words = str.split(' ');
+    return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+function displayData(data) {
+    let table = d3.select('.table-area>table');
+    table.select('tbody').remove();
+
+    let tbody = table.append('tbody');
+
+    let rows = tbody.selectAll('tr')
+        .data(data)
+        .enter()
+        .append('tr');
+
+    rows.append('td').text(d => dateFormat(d.raw_datetime, 'mmm dd,yyyy'));
+    rows.append('td').text(d => title(d.city));
+    rows.append('td').text(d => d.state.toUpperCase());
+    rows.append('td').text(d => d.country.toUpperCase());
+    rows.append('td').text(d => title(d.shape));
+}
+
 function onSearch(e) {
     const text = e.target.value;
     let suggestions = getSuggestions(text);
@@ -160,5 +189,8 @@ window.addEventListener('load', () => {
     searchBar.addEventListener('input', onSearch);
     
     let suggestions = getSuggestions();
-    updateSuggestions(suggestions)
+    updateSuggestions(suggestions);
+    
+    let data = getData();
+    displayData(data);
 });
