@@ -52,8 +52,8 @@ const dateSuggestions = [
     },    
     {
         search: 'this year',
-        display: 'This month',
-        filter: x => x.raw_datetime >= thisMonthStartDate
+        display: 'This year',
+        filter: x => x.raw_datetime >= thisYearStartDate
     },
     {
         search: 'last month',
@@ -73,8 +73,17 @@ function getDateSuggestions(text) {
     }
     let date = Date.parse(text);
     if (date) {
-        let dateStr = dateformat(date, 'mmm d, yyyy')
+        date += new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+        let dateStr = window.dateFormat(date, 'mmm d,yyyy')
         return [
+            {
+                display: `Before ${dateStr}`,
+                filter: x => x.raw_datetime < date
+            },
+            {
+                display: `Before/on ${dateStr}`,
+                filter: x => x.raw_datetime <= date
+            },
             {
                 display: `On ${dateStr}`,
                 filter: x => x.raw_datetime === date
@@ -84,9 +93,9 @@ function getDateSuggestions(text) {
                 filter: x => x.raw_datetime > date
             },
             {
-                display: `Before ${dateStr}`,
-                filter: x => x.raw_datetime < date
-            },
+                display: `After/on ${dateStr}`,
+                filter: x => x.raw_datetime >= date
+            }
         ]
     }
     return dateSuggestions.filter(x => x.search.includes(text));
@@ -117,6 +126,10 @@ function updateSuggestions(suggestions) {
     let selection = d3.select('.suggestion-list')
         .selectAll('.suggestion')
         .data(suggestions);
+
+    selection.select('a.suggestion-text')
+        .text(d => d.display);
+
     selection.exit().remove();
 
     var boxes = selection.enter()    
@@ -124,6 +137,8 @@ function updateSuggestions(suggestions) {
         .attr('class', 'suggestion');
     boxes.append('a')
         .attr('class', 'suggestion-text')
+        .attr('href', '#')
+        .text(d => d.display)
         .on('click', onSelectFilter);
     boxes.append('a')
         .attr('class', 'suggestion-action')
@@ -132,8 +147,6 @@ function updateSuggestions(suggestions) {
         .attr('src', 'static/images/add.svg')
         .style('max-height', '100%')
         .on('click', onAddFilter);
-
-    selection.select('a').text(d => d.display);
 }
 
 function onSearch(e) {

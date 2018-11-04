@@ -76,21 +76,34 @@ input[type='datetime-local'] {
 }
 
 .suggestion {
-  background-color: cornflowerblue;
+  background-color: gray;
   border-radius: 4px;
   height: 30px;
   display: flex;
   flex-direction: row;
+  margin-left: 0.5rem;
 }
 
 .suggestion-text {
   color: white;
-  padding: 0.25rem;
+  padding: 0.25rem 0.4rem;
+}
+
+.suggestion-text:hover {
+  color: white;
 }
 
 .suggestion-action {
   width: 30px;
-  padding: 0.25rem;
+  border-left: 1px solid transparent;
+}
+
+.suggestion-action:hover {  
+  border-left: 1px solid white;
+}
+
+.suggestion-action img {
+  padding: 0.4rem;
 }
 
 .active-filters {
