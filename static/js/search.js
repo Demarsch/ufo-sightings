@@ -39,10 +39,10 @@ for (const country in cityData) {
 
 const now = new Date(Date.now());
      
-const thisMonthStartDate = new Date(now.getYear(), now.getMonth(), 1);
-const thisYearStartDate = new Date(now.getYear(), 0, 1);
-const lastMonthStartDate = now.getMonth() == 0 ? new Date(now.getYear() - 1, 11, 1) : new Date(now.getYear(), now.getMonth() - 1, 1);
-const lastYearStartDate = new Date(now.getYear() - 1, 0, 1);
+const thisMonthStartDate = new Date(1900 + now.getYear(), now.getMonth(), 1);
+const thisYearStartDate = new Date(1900 + now.getYear(), 0, 1);
+const lastMonthStartDate = now.getMonth() == 0 ? new Date(1900 + now.getYear() - 1, 11, 1) : new Date(1900 + now.getYear(), now.getMonth() - 1, 1);
+const lastYearStartDate = new Date(1900 + now.getYear() - 1, 0, 1);
 
 const predefinedDateFilters = [
     {
@@ -77,8 +77,7 @@ function getDateFilters(text) {
     }
     let date = Date.parse(text);
     if (date) {
-        date += new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-        let dateStr = dateFormat(date, 'mmm d,yyyy')
+        let dateStr = dateFormat(date, 'mmm d,yyyy', false);
         return [
             {
                 display: `Before ${dateStr}`,
@@ -113,7 +112,10 @@ function getSuggestedFilters(text) {
 }
 
 function onRemoveFilter(filter) {
-
+    filter.active = false;
+    activeFilters.splice(activeFilters.indexOf(filter), 1);
+    updateFilters();
+    updateData();
 }
 
 function onSelectFilter(filter) {
@@ -121,12 +123,14 @@ function onSelectFilter(filter) {
     filter.active = true;
     activeFilters = [ filter ];
     updateFilters();
+    updateData();
 }
 
 function onAddFilter(filter) {
     filter.active = true;
     activeFilters.push(filter);
     updateFilters();
+    updateData();
 }
 
 function getAllFilters() {
@@ -168,8 +172,7 @@ function getData() {
     if (!activeFilters.length) {
         return data;
     }
-    //TODO: 
-    return data;
+    return data.filter(d => activeFilters.every(af => af.filter(d)));
 }
 
 function title(str) {
@@ -177,7 +180,9 @@ function title(str) {
     return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
-function displayData(data) {
+function updateData() {      
+    let data = getData();
+
     let table = d3.select('.table-area>table');
     table.select('tbody').remove();
 
@@ -207,7 +212,5 @@ window.addEventListener('load', () => {
     
     suggestedFilters = getSuggestedFilters();
     updateFilters();
-    
-    let data = getData();
-    displayData(data);
+    updateData();
 });

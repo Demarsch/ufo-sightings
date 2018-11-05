@@ -138,11 +138,11 @@ input[type='datetime-local'] {
   color: inherit;
 }
 
-.form-control {
-  width: initial;
+.table-area {
+  overflow-x: auto;
 }
 
-.table-responsive {
+.form-control {
   width: initial;
 }
 
