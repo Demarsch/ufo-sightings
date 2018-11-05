@@ -6,7 +6,7 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
   padding: 0;
   margin: 0;
 }
@@ -69,47 +69,60 @@ input[type='datetime-local'] {
   background-color: white;
 }
 
-.suggestion-list {
+.filter-list {
   min-height: 2rem;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 0.5rem;
 }
 
-.suggestion {
+.filter {  
   background-color: gray;
   border-radius: 4px;
   height: 30px;
   display: flex;
   flex-direction: row;
   margin-left: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
-.suggestion-text {
+.filter.active {
+  background-color: cornflowerblue;
+}
+
+.filter-text {
   color: white;
   padding: 0.25rem 0.4rem;
 }
 
-.suggestion-text:hover {
+.filter.active .filter-text {
   color: white;
 }
 
-.suggestion-action {
+.filter.active .filter-text:not([href]):hover {
+  color: white;
+}
+
+.filter-text:hover {
+  color: white;
+}
+
+.filter-action {
   width: 30px;
   border-left: 1px solid transparent;
 }
 
-.suggestion-action:hover {  
+.filter-action:hover {  
   border-left: 1px solid white;
 }
 
-.suggestion-action img {
+.filter-action img {
   padding: 0.4rem;
+  max-height: 100%;
 }
 
-.active-filters {
-  min-height: 2rem;
-  display: flex;
-  flex-wrap: wrap;
+.filter.active .filter-action img {
+  transform: rotate(45deg)
 }
 
 .was-validated .form-control:valid {
@@ -123,6 +136,14 @@ input[type='datetime-local'] {
 
 .was-validated .form-check-input:valid~.form-check-label {
   color: inherit;
+}
+
+.form-control {
+  width: initial;
+}
+
+.table-responsive {
+  width: initial;
 }
 
 .navbar {

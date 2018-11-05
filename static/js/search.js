@@ -1,6 +1,6 @@
-let fiterSuggestions = [];
+let activeFilters = []
 
-let activeFilters = [];
+let suggestedFilters = []
 
 const countries = [
     'Austria',    
@@ -44,32 +44,36 @@ const thisYearStartDate = new Date(now.getYear(), 0, 1);
 const lastMonthStartDate = now.getMonth() == 0 ? new Date(now.getYear() - 1, 11, 1) : new Date(now.getYear(), now.getMonth() - 1, 1);
 const lastYearStartDate = new Date(now.getYear() - 1, 0, 1);
 
-const dateSuggestions = [
+const predefinedDateFilters = [
     {
         search: 'this month',
         display: 'This month',
-        filter: x => x.raw_datetime >= thisMonthStartDate
+        filter: x => x.raw_datetime >= thisMonthStartDate,
+        isActive: false
     },    
     {
         search: 'this year',
         display: 'This year',
-        filter: x => x.raw_datetime >= thisYearStartDate
+        filter: x => x.raw_datetime >= thisYearStartDate,
+        isActive: false
     },
     {
         search: 'last month',
         display: 'Last month',
-        filter: x => x.raw_datetime >= lastMonthStartDate && x.raw_datetime < thisMonthStartDate
+        filter: x => x.raw_datetime >= lastMonthStartDate && x.raw_datetime < thisMonthStartDate,
+        isActive: false
     },
     {
         search: 'last year',
         display: 'Last year',
-        filter: x => x.raw_datetime >= lastYearStartDate && x.raw_datetime < thisYearStartDate
+        filter: x => x.raw_datetime >= lastYearStartDate && x.raw_datetime < thisYearStartDate,
+        isActive: false
     }
 ]
 
-function getDateSuggestions(text) {
+function getDateFilters(text) {
     if (!text || text.length < 2) {
-        return Array.from(dateSuggestions);
+        return Array.from(predefinedDateFilters);
     }
     let date = Date.parse(text);
     if (date) {
@@ -98,54 +102,65 @@ function getDateSuggestions(text) {
             }
         ]
     }
-    return dateSuggestions.filter(x => x.search.includes(text));
+    return predefinedDateFilters.filter(x => x.search.includes(text));
 }
 
-function getSuggestions(text) {
+function getSuggestedFilters(text) {
     text = text ? text.trim() : '';
     text = text.toLowerCase();
-    let dateSuggestions = getDateSuggestions(text);
-    return dateSuggestions;
+    let dateFilters = getDateFilters(text);
+    return dateFilters;
+}
+
+function onRemoveFilter(filter) {
+
+}
+
+function onSelectFilter(filter) {
+    activeFilters.forEach(f => f.active = false);
+    filter.active = true;
+    activeFilters = [ filter ];
+    updateFilters();
+}
+
+function onAddFilter(filter) {
+    filter.active = true;
+    activeFilters.push(filter);
+    updateFilters();
+}
+
+function getAllFilters() {
+    let allFilters = suggestedFilters.filter(sf => !activeFilters.some(af => af.display === sf.display));
+    allFilters = activeFilters.concat(allFilters); 
+    return allFilters;
 }
 
 function updateFilters() {
-    
-}
+    let filters = getAllFilters();
+    d3.selectAll('.filter-list .filter').remove();
 
-function onSelectFilter() {
-    console.log('Select filter');
-    updateFilters();
-}
+    let selection = d3.select('.filter-list')
+        .selectAll('.filter')
+        .data(filters);
 
-function onAddFilter() {
-    console.log('Add filter');
-    updateFilters();
-}
-
-function updateSuggestions(suggestions) {
-    let selection = d3.select('.suggestion-list')
-        .selectAll('.suggestion')
-        .data(suggestions);
-
-    selection.select('a.suggestion-text')
-        .text(d => d.display);
-
-    selection.exit().remove();
-
-    var boxes = selection.enter()    
+    let boxes = selection.enter()    
         .append('div')
-        .attr('class', 'suggestion');
+        .attr('class', 'filter')        
+        .classed('active', d => d.active)
     boxes.append('a')
-        .attr('class', 'suggestion-text')
-        .attr('href', '#')
+        .attr('class', 'filter-text')
+        .attr('href', d => d.active ? null : '#')
         .text(d => d.display)
-        .on('click', onSelectFilter);
-    boxes.append('a')
-        .attr('class', 'suggestion-action')
+        .filter(d => !d.active)
+            .on('click', onSelectFilter);
+    let actions = boxes.append('a')
+        .attr('class', 'filter-action')
         .attr('href', '#')
         .append('img')
-        .attr('src', 'static/images/add.svg')
-        .style('max-height', '100%')
+        .attr('src', 'static/images/add.svg');
+    actions.filter(d => d.active)
+        .on('click', onRemoveFilter);
+    actions.filter(d => !d.active)
         .on('click', onAddFilter);
 }
 
@@ -153,6 +168,8 @@ function getData() {
     if (!activeFilters.length) {
         return data;
     }
+    //TODO: 
+    return data;
 }
 
 function title(str) {
@@ -180,16 +197,16 @@ function displayData(data) {
 
 function onSearch(e) {
     const text = e.target.value;
-    let suggestions = getSuggestions(text);
-    updateSuggestions(suggestions)
+    suggestedFilters = getSuggestedFilters(text);   
+    updateFilters();
 }
 
 window.addEventListener('load', () => {
     let searchBar = document.querySelector('#search-bar');
     searchBar.addEventListener('input', onSearch);
     
-    let suggestions = getSuggestions();
-    updateSuggestions(suggestions);
+    suggestedFilters = getSuggestedFilters();
+    updateFilters();
     
     let data = getData();
     displayData(data);
