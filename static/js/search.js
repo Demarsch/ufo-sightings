@@ -2,40 +2,15 @@ let activeFilters = []
 
 let suggestedFilters = []
 
-const countries = [
-    'Austria',    
-    'Canada',
-    'Poland',
-    'Russia',
-    'US'
-];
+const maxFiltersFromCategory = 3;
 
-let rawCityData = {};
-for (const item of data) {
-    let country = rawCityData[item.country];
-    if (!country) {
-        country = {};
-        rawCityData[item.country] = country;
-    }
-    let state = country[item.state];
-    if (!state) {
-        state = new Set();
-        country[item.state] = state;
-    }
-    state.add(item.city);
-}
+const countries = Array.from(new Set(data.map(d => d.country)));
 
-let cityData = [];
-for (const country in cityData) {
-    const state = cityData[country];
-    for (const city of state) {
-        cityData.push({
-            city: city,
-            state: state,
-            country: country
-        })
-    }
-}
+const states = Array.from(new Set(data.map(d => d.state)));
+
+const cities = Array.from(new Set(data.map(d => d.city)));
+
+const shapes = Array.from(new Set(data.map(d => d.shape)));
 
 const now = new Date(Date.now());
      
@@ -104,11 +79,72 @@ function getDateFilters(text) {
     return predefinedDateFilters.filter(x => x.search.includes(text));
 }
 
+function getCountryFilters(text) {
+    if (!text || text.length < 2) {
+        return [ {
+            display: 'Country is US',
+            filter: x => x.country === 'us'
+        }];
+    }
+    return countries.filter(c => c.includes(text)).map(c => ({
+        display: `Country is ${c.toUpperCase()}`,
+        filter: x => x.country === c
+    }));
+}
+
+function getStateFilters(text) {
+    if (!text || text.length < 2) {
+        return [ {
+            display: 'State is CA',
+            filter: x => x.state === 'ca'
+        }];
+    }
+    return states.filter(s => s.includes(text)).map(s => ({
+        display: `State is ${s.toUpperCase()}`,
+        filter: x => x.state === s
+    }));
+}
+
+function getCityFilters(text) {
+    if (!text || text.length < 2) {
+        return [];
+    }
+    return cities.filter(c => c.includes(text)).map(c => ({
+        display: `City is '${title(c)}'`,
+        filter: x => x.city === c
+    }));
+}
+
+function getShapeFilters(text) {
+    if (!text || text.length < 2) {
+        return [];
+    }
+    return shapes.filter(s => s.includes(text)).map(s => ({
+        display: `Shape is ${title(s)}`,
+        filter: x => x.shape === s
+    }));
+}
+
+function getCommentFilters(text) {
+    if (!text || text.length < 2) {
+        return [];
+    }
+    return [{
+        display: `Comment contains '${text}'`,
+        filter: x => x.comments.toLowerCase().includes(text)
+    }];
+}
+
 function getSuggestedFilters(text) {
     text = text ? text.trim() : '';
     text = text.toLowerCase();
     let dateFilters = getDateFilters(text);
-    return dateFilters;
+    let countryFilters = getCountryFilters(text).slice(0, maxFiltersFromCategory);
+    let stateFilters = getStateFilters(text).slice(0, maxFiltersFromCategory);
+    let cityFilters = getCityFilters(text).slice(0, maxFiltersFromCategory);
+    let shapeFilters = getShapeFilters(text).slice(0, maxFiltersFromCategory);
+    let commentFilters = getCommentFilters(text).slice(0, maxFiltersFromCategory);
+    return dateFilters.concat(countryFilters, stateFilters, cityFilters, shapeFilters, commentFilters);
 }
 
 function onRemoveFilter(filter) {
@@ -198,9 +234,10 @@ function updateData() {
     rows.append('td').text(d => d.state.toUpperCase());
     rows.append('td').text(d => d.country.toUpperCase());
     rows.append('td').text(d => title(d.shape));
+    rows.append('td').text(d => d.comments);
 }
 
-function onSearch(e) {
+function onTextChanged(e) {
     const text = e.target.value;
     suggestedFilters = getSuggestedFilters(text);   
     updateFilters();
@@ -208,8 +245,8 @@ function onSearch(e) {
 
 window.addEventListener('load', () => {
     let searchBar = document.querySelector('#search-bar');
-    searchBar.addEventListener('input', onSearch);
-    
+    searchBar.addEventListener('input', onTextChanged);
+
     suggestedFilters = getSuggestedFilters();
     updateFilters();
     updateData();

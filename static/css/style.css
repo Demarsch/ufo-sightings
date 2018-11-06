@@ -69,6 +69,10 @@ input[type='datetime-local'] {
   background-color: white;
 }
 
+#search-bar {
+  width: initial;
+}
+
 .filter-list {
   min-height: 2rem;
   display: flex;
@@ -140,10 +144,6 @@ input[type='datetime-local'] {
 
 .table-area {
   overflow-x: auto;
-}
-
-.form-control {
-  width: initial;
 }
 
 .navbar {
